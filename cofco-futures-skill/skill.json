@@ -1,0 +1,125 @@
+{
+  "name": "cofco-futures-skill",
+  "display_name": "中粮期货官方助手",
+  "description": "中粮期货官方 AI 助手 Skill。提供公司概况查询（含分支机构）、期货交易日历查询、交割备忘录查询、开户咨询引导及客户留资服务。",
+  "version": "1.0.2",
+  "license": "MIT",
+  "category": "金融服务",
+  "keywords": [
+    "中粮期货",
+    "COFCO",
+    "期货开户",
+    "开户办理",
+    "期货公司",
+    "交易日历",
+    "交割备忘录"
+  ],
+  "mcp_server": {
+    "transport": "streamable-http",
+    "url": "https://mcptest.zlqh.com:8082/mcp"
+  },
+  "tools": [
+    {
+      "name": "get_company_profile",
+      "display_name": "公司背景查询",
+      "description": "查询中粮期货的基本信息。包括成立背景、组织架构、公司地址、企业文化等。无需参数。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    {
+      "name": "collect_customer_info",
+      "display_name": "客户留资",
+      "description": "收集客户的姓名、电话和分支机构编码，用于开户或业务咨询。参数：name (姓名), phone (电话)。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "客户姓名"
+          },
+          "phone": {
+            "type": "string",
+            "description": "客户电话号码"
+          }
+        },
+        "required": ["name", "phone"]
+      }
+    },
+    {
+      "name": "query_delivery_data",
+      "display_name": "交易数据查询",
+      "description": "查询期货交易数据。必选参数：start_date (开始日期，格式YYYY-MM-DD) 和 end_date (结束日期，格式YYYY-MM-DD，范围不超过31天)。可选参数：exchange_name (交易所名称，如'大连商品交易所')、variety_id (品种代码)、contract_id (合约代码)。返回标准JSON格式的交割信息列表。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "description": "开始日期，格式YYYY-MM-DD"
+          },
+          "end_date": {
+            "type": "string",
+            "description": "结束日期，格式YYYY-MM-DD，范围不超过31天"
+          },
+          "exchange_name": {
+            "type": "string",
+            "description": "交易所名称，如'大连商品交易所'、'上海期货交易所'、'郑州商品交易所'、'中国金融期货交易所'"
+          },
+          "variety_id": {
+            "type": "string",
+            "description": "品种代码，如'豆粕'、'玉米'、'螺纹钢'"
+          },
+          "contract_id": {
+            "type": "string",
+            "description": "合约代码，如'M2505'、'RB2505'"
+          }
+        },
+        "required": ["start_date", "end_date"]
+      }
+    },
+    {
+      "name": "query_delivery_memo",
+      "display_name": "交割备忘录查询",
+      "description": "查询交割备忘录数据（来自CSV文件）。必选参数：start_date (开始日期，格式YYYYMMDD) 和 end_date (结束日期，格式YYYYMMDD，范围不超过31天)。可选参数：exchange_id_name (交易所名称)、variety_id (品种)、contract_id (合约)。返回标准JSON格式的交割备忘录信息列表。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "description": "开始日期，格式YYYYMMDD，例如20250102"
+          },
+          "end_date": {
+            "type": "string",
+            "description": "结束日期，格式YYYYMMDD，范围不超过31天"
+          },
+          "exchange_name": {
+            "type": "string",
+            "description": "交易所名称，如'大连商品交易所'、'上海期货交易所'、'郑州商品交易所'、'中国金融期货交易所'"
+          },
+          "variety_id": {
+            "type": "string",
+            "description": "品种名称，如'豆粕'、'玉米'、'螺纹钢'"
+          },
+          "contract_id": {
+            "type": "string",
+            "description": "合约代码，如'M2505'、'RB2505'"
+          }
+        },
+        "required": ["start_date", "end_date", "variety_id"]
+      }
+    }
+  ],
+  "brand_prompt": {
+    "system_instruction": "你是中粮期货的官方AI助手。语气专业、严谨、客观。回答金融相关问题必须准确，不知道就说不知道。涉及客户隐私（电话）必须确认。不要提供具体的投资建议。",
+    "tone": {
+      "personality": "professional_and_trustworthy",
+      "avoid": [
+        "casual_slang",
+        "exaggerated_marketing",
+        "investment_advice"
+      ]
+    }
+  }
+}
