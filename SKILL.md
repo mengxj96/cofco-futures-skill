@@ -24,7 +24,7 @@ keywords:
 
 # 中粮期货 · 官方服务 Skill (COFCO Futures Official Service)
 
-> **文档版本**: v1.0.5  
+> **文档版本**: v1.0.6  
 > **最后更新**: 2026-05-08  
 > **适用对象**: AI Agent / MCP Client / 开发者
 ---
